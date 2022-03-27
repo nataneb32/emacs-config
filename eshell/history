@@ -1,0 +1,128 @@
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+git submodule git@github.com:troglobit/libuev.git
+git submodule git@github.com:troglobit/libuev.git
+git init
+git submodule git@github.com:troglobit/libuev.git
+git submodule add git@github.com:troglobit/libuev.git
+ls
+cd libuev/
+ls
+./configuremake -j5make checksudo make install-stripsudo ldconfig
+./autogen.sh 
+ls
+./configure 
+./autogen.sh make -j5
+make check 
+cd .o.
+cd ..
+rm -R libuev/
+git submodule add git@github.com:codepr/ev.git
+cd ..
+cd ..
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+]
+go run cmd/api/main.go 
+export DATABASE_URL="postgres://postgres:password@localhost:5432?sslmode=disable"
+go run cmd/api/main.go 
+ls
+export DATABASE_URL="postgres://postgres:password@localhost:5432?sslmode=disable"
+go run cmd/api/main.go 
+domain/common/registerAdmin.go:17:3: not enough arguments to return
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+clear 
+cd ..
+cd ..
+go run cmd/api/main.go 
+export DATABASE_URL="postgres://postgres:password@localhost:5432?sslmode=disable"
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go get github.com/go-playground/validator/v10
+go get github.com/go-playground/validator/v10
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go mod tidy
+go mod tidy
+go mod tidy
+go mod tidy
+go run cmd/api/main.go 
+go get github.com/go-playground/validator/v10
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+clear 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go mod tidy
+go run cmd/api/main.go 
+cd ..
+cd ..
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+go run cmd/api/main.go 
+export DATABASE_URL="postgres://postgres:password@localhost:5432?sslmode=disable"
+go run cmd/api/main.go 
+nvm
+npm
+nvm
+npm
+npm
+ls ~/.nvm/versions/node/v17.4.0/
+ls ~/.nvm/versions/node/v17.4.0/bin/
+node
+node
+node
+node
+node
+node
+node
+echo PATH
+echo $PATH
+echo $PATH
+echo $PATH
+echo $PATH
+echo $PATH
+node
+npm
+node
+ls
+ls
+npm install -G eslint_d
+cd ~/random/people-admin-dashboard/
+npm run dev
+npm run dev
+npm run dev
+npm i recoil
+npm run dev
+npm run dev
+npm run dev

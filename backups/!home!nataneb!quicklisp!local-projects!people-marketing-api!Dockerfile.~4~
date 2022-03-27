@@ -1,0 +1,6 @@
+FROM clfoundation/sbcl
+
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+
+RUN sbcl --load ./quicklisp.lisp --eval "(quicklisp-quickstart:install)" --load ./people-marketing-api.asd --load ./run.lisp --non-interactive

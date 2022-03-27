@@ -1,0 +1,28 @@
+import { Dashboard } from "../../components/dashboard"
+import { Card } from "../../components/card"
+import { Table } from "../../components/table"
+
+export default function CustomersPage() {
+
+    const loadRows = async () => {
+        const url = new URL("http://localhost:8080/marketing/search-leads")
+        url.search = new URLSearchParams({}).toString()
+        
+        return fetch(url).then(res => {
+            return res.json()
+        })
+    }
+    
+    return <Dashboard>
+             <Card>
+               <h1 className="text-5xl font-light mb-10"> Leads </h1>
+               
+               <Table table={LeadTable} loadRows={loadRows} />
+             </Card>
+           </Dashboard>
+}
+
+const LeadTable = [{ name: "name", displayName: "Name", ops: [{name: "equal",displayName: "=", values: "string"}, {name: "not equal",displayName: "/=", values: "string"}] },
+                   { name: "email", displayName: "Email", ops: [{name: "equal",displayName: "=", values: "string"}]  },
+                   { name: "phone", displayName: "Phone", ops: [{name: "equal",displayName: "=", values: "string"}]  },
+                   { name: "status", displayName: "Status", ops: [{name: "equal",displayName: "=", values: "string"}]  }]

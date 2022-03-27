@@ -1,0 +1,4 @@
+# SSLang
+
+This is a lang for the working programming. It is a extention of Scheme that compiles to Scheme (R5RS).
+You can virtually use any scheme compiler in the backend. Basically trasforms a ss:

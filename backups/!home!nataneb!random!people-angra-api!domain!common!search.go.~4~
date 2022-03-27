@@ -1,0 +1,101 @@
+package common
+
+import (
+	"context"
+	"math"
+	"reflect"
+
+	"github.com/go-rel/rel"
+	"github.com/go-rel/rel/where"
+)
+
+type Filter struct {
+	Name  string
+	Op    string
+	Value interface{}
+}
+
+func (it Filter) HasNumberInValue() (int, bool) {
+	v, ok := it.Value.(int)
+	return v, ok
+}
+
+func (it Filter) HasStringInValue() (string, bool) {
+	v, ok := it.Value.(string)
+	return v, ok
+}
+
+func (it Filter) HasName(name string) bool {
+	return it.Name == name
+}
+
+type FilterSchema struct {
+	Name          string
+	Op            FilterSchemaOp
+	ValidateValue ValidateValueFunc
+}
+
+type FilterSchemaOp string
+
+var (
+	EqualOp = FilterSchemaOp("equal")
+	NotEqualOp = FilterSchemaOp("not_equal")
+	GTOp    = FilterSchemaOp("gt")
+	LTOp    = FilterSchemaOp("lt")
+	SearchOp = FilterSchemaOp("search")
+)
+
+type ValidateValueFunc func(value interface{}) bool
+
+func ValidateString(value interface{}) bool {
+	_, ok := value.(string)
+	return ok
+}
+
+func GenerateQueries(schemas []FilterSchema, filters []Filter) (res []rel.Querier) {
+	for _, filter := range filters {
+		for _, schema := range schemas {
+			if filter.Name == schema.Name && filter.Op == string(schema.Op) {
+				if schema.ValidateValue(filter.Value) {
+					switch schema.Op {
+					case EqualOp:
+            res = append(res, where.Eq(filter.Name, filter.Value))
+					case GTOp:
+            res = append(res, where.Gt(filter.Name, filter.Value))
+					case LTOp:
+            res = append(res, where.Lt(filter.Name, filter.Value))
+					}
+				}
+			}
+		}
+	}
+
+	return res
+}
+
+type SearchWithFiltersFunc func(ctx context.Context, filters []Filter, resTyp interface{}, page int, limit int) (interface{}, int, int, error)
+
+func NewSearchWithFiltersFunc(schemas []FilterSchema, repo rel.Repository) SearchWithFiltersFunc {
+	return func(ctx context.Context, filters []Filter, resTyp interface{}, page int, limit int) (interface{}, int, int, error) {
+		sliceT := reflect.SliceOf(reflect.TypeOf(resTyp))
+		pres := reflect.New(sliceT)
+		pres.Elem().Set(reflect.MakeSlice(sliceT, 0, 100))
+		
+		ires := pres.Interface()
+
+		queries := GenerateQueries(schemas, filters)
+		queries = append(queries, rel.Offset(calOffset(limit, page)))
+		queries = append(queries, rel.Limit(limit))
+
+		err := repo.FindAll(ctx, ires, queries...)
+		if err != nil {
+			return nil, 0, 0, err
+		}
+		
+		return ires, 0, 0, err
+	}
+}
+
+func calOffset(limit int, page int) int {
+	return int(math.Max(float64((page - 1) * limit), 0))
+}

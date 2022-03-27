@@ -1,0 +1,88 @@
+(require 'package)
+(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
+
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(eval-and-compile
+  (setq use-package-always-ensure t
+        use-package-expand-minimally t))
+
+(use-package sly)
+(use-package better-defaults)
+
+;; load evil
+(use-package evil
+  :ensure t ;; install the evil package if not installed
+  :init ;; tweak evil's configuration before loading it
+  (setq evil-search-module 'evil-search)
+  (setq evil-ex-complete-emacs-commands nil)
+  (setq evil-vsplit-window-right t)
+  (setq evil-split-window-below t)
+  (setq evil-shift-round nil)
+  (setq evil-want-C-u-scroll t)
+  :config ;; tweak evil after loading it
+  (evil-mode)
+  
+  ;; example how to map a command in normal mode (called 'normal state' in evil)
+  (define-key evil-normal-state-map (kbd ", w") 'evil-window-vsplit)
+  (define-key evil-window-map (kbd "<right>") 'evil-window-right)
+  (define-key evil-window-map (kbd "<left>") 'evil-window-left)
+  (define-key evil-window-map (kbd "<dowm>") 'evil-window-down)
+  (define-key evil-window-map (kbd "<up>") 'evil-window-up)
+  )
+
+(use-package which-key
+  :ensure t
+  :init (which-key-mode))
+
+(use-package company
+  :ensure t
+  :config
+  (progn
+    (add-hook 'sly-mode-hook 'company-mode)
+    (add-hook 'lisp-mode-hook 'company-mode)
+    (add-hook 'after-init-hook 'global-company-mode)))
+
+
+(use-package dracula-theme
+  :config (load-theme 'dracula t))
+
+(use-package neotree
+  :ensure t
+  :bind (("C-c n" . neotree-toggle))
+  :defer
+  :config
+    (evil-set-initial-state 'neotree-mode 'normal)
+    (evil-define-key 'normal neotree-mode-map
+      (kbd "RET") 'neotree-enter
+      (kbd "c")   'neotree-create-node
+      (kbd "r")   'neotree-rename-node
+      (kbd "d")   'neotree-delete-node
+      (kbd "j")   'neotree-next-node
+      (kbd "k")   'neotree-previous-node
+      (kbd "g")   'neotree-refresh
+      (kbd "C")   'neotree-change-root
+      (kbd "I")   'neotree-hidden-file-toggle
+      (kbd "H")   'neotree-hidden-file-toggle
+      (kbd "q")   'neotree-hide
+      (kbd "l")   'neotree-enter
+      ))
+
+(use-package all-the-icons
+  :defer)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages '(better-defaults evil dracula-theme sly use-package)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

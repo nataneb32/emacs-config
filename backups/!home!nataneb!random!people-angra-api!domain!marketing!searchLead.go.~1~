@@ -1,0 +1,28 @@
+package marketing
+
+import (
+	"context"
+
+	"github.com/nataneb32/people-angra-api/config"
+	"github.com/nataneb32/people-angra-api/domain/common"
+	marketingModel "github.com/nataneb32/people-angra-api/domain/marketing/model"
+)
+
+type SearchLeadFunc func(filters []common.Filter) ([]marketingModel.Lead, error)
+
+func NewSearchLead(search common.SearchWithFiltersFunc) SearchLeadFunc {
+	return func(filters []common.Filter) ([]marketingModel.Lead, error) {
+		ctx := context.Background()
+
+		res, err := search(ctx, filters, marketingModel.Lead{})
+		return res.([]marketingModel.Lead), err
+	}
+}
+
+var SearchLeadFilters = []common.FilterSchema{{
+	Name:          "name",
+	Op:            "equal",
+	ValidateValue: common.ValidateString,
+}}
+
+var SearchLead = NewSearchLead(common.NewSearchWithFiltersFunc(SearchLeadFilters, config.DB))

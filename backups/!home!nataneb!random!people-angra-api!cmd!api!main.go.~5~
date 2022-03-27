@@ -1,0 +1,72 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/labstack/echo/v4"
+	"github.com/nataneb32/people-angra-api/domain/marketing"
+	"github.com/nataneb32/people-angra-api/domain/common"
+)
+
+func main(){
+	r := echo.New()
+
+	type RegisterLeadParam struct {
+		Name string
+		Email string
+		Password string
+	}
+
+	r.POST("/marketing/register-lead", func(c echo.Context) error {
+		var param RegisterLeadParam
+		err := c.Bind(&param)
+		if err != nil {
+			return err
+		}
+
+		err = marketing.RegisterLead(param.Name, param.Email, param.Password)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+	r.GET("/marketing/search-leads", func(c echo.Context) error {
+		var param SearchParam
+		err := c.Bind(&param)
+		if err != nil {
+			return err
+		}
+		fmt.Println(param.ParseFilters())
+
+		res, _,_ err := marketing.SearchLead(param.ParseFilters(), 1, 10)
+		if err != nil {
+			return err
+		}
+
+		c.JSON(200, res)
+		
+		return nil
+	})
+
+
+	r.Start("0.0.0.0:8080")
+}
+
+
+type SearchParam struct {
+	Filters string `query:"filters"`
+}
+
+func (it *SearchParam) ParseFilters() ([]common.Filter) {
+	if it.Filters == "" {
+		return nil
+	}
+	var param []common.Filter
+	err := json.Unmarshal([]byte(it.Filters), &param)
+	if err != nil {
+		panic(err)
+	}
+
+	return param
+}

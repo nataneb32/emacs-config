@@ -1,0 +1,15 @@
+package main
+
+import "net/http"
+
+func main(){
+	http.Handle("/marketing/", marketing())
+	http.ListenAndServe("0.0.0.0:8080", nil)
+}
+
+func marketing() *http.ServeMux {
+	m := http.NewServeMux()
+	m.HandleFunc("/", func() {
+	})
+	return m
+}

@@ -1,0 +1,13 @@
+package marketingModel
+
+import "time"
+
+type Lead struct {
+	ID    int64
+	Name  string
+	Email string
+	Phone string
+
+	IsCustomer      *int64
+	IsCustomerSince *time.Time
+}

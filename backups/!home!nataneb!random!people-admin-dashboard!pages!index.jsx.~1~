@@ -1,0 +1,61 @@
+import Head from 'next/head'
+import Image from 'next/image'
+import { useRouter } from 'next/router'
+import { useForm } from 'react-hook-form'
+import styles from '../styles/Home.module.css'
+
+export default function Home() {
+    return (
+        <div className='flex w-full h-full flex-col items-center justify-center bg-purple-100'>
+            <div>
+                <h1 className="text-5xl mb-14">LOGO</h1>
+            </div>
+            <div className='p-10 max-w-2xl w-full shadow-xl shadow-purple-300 rounded-xl bg-white'>
+                <LoginForm />
+            </div>
+        </div>
+    )
+}
+
+const LoginForm = () => {
+    const router = useRouter()
+    const { register, formState: {errors}, setError, handleSubmit} = useForm()
+
+    return <form
+             onSubmit={handleSubmit(({email, password}) => {
+                 if(email !== "peopleangra@gmail.com") {
+                     setError("email", {message: "Email invalido"})
+                     return
+                 }
+
+                 if(password !== "123123") {
+                     setError("password", {message: "Senha invalido"})
+                     return
+                 }
+                 
+                 router.push("/dashboard")
+             })}
+           >
+        <div className="mb-6">
+            <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Seu email</label>
+          <input {...register("email")} type="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500" required />
+          {errors.email && <p>{errors.email.message}</p>}
+        </div>
+        <div className="mb-6">
+            <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Sua senha</label>
+          <input {...register("password")} type="password" id="password" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500" required />
+          {errors.password && <p>{errors.password.message}</p>}
+        </div>
+        <div className="flex items-start mb-6">
+            <div className="flex items-center h-5">
+                <input id="remember" aria-describedby="remember" type="checkbox" className="w-4 h-4 bg-gray-50 rounded border border-gray-300 focus:ring-3 focus:ring-purple-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-purple-600 dark:ring-offset-gray-800"/>
+            </div>
+            <div className="ml-3 text-sm">
+                <label htmlFor="remember" className="font-medium text-gray-900 dark:text-gray-300">Lembrar minha senha</label>
+            </div>
+        </div>
+        <button type="submit" className="text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800 shadow-xl shadow-purple-600">
+            Logar
+        </button>
+    </form>
+}

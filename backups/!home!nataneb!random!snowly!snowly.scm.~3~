@@ -1,0 +1,13 @@
+(import chicken.tcp chicken.io srfi-18)
+
+(define (hello port)
+  (let ((socket (tcp-listen port)))
+  (thread-start! (make-thread (http-accept-loop socket)))))
+
+(define (http-accept-loop socket)
+  (let-values (((in out) (tcp-accept socket)))
+    (thread-start! (lambda () (http-callback socket in out)))))
+
+(define (http-callback conn in out)
+  (print (read-line in))
+  (http-callback conn in out))

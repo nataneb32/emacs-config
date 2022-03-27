@@ -1,0 +1,3 @@
+(ql:quickload "people-marketing-api")
+
+(people-marketing-api:start-and-block)

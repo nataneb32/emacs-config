@@ -1,0 +1,16 @@
+(in-package #:people-marketing-api.view)
+
+(defmacro as-json (&body body)
+  `(with-output-to-string (out)
+     (cl-json:encode-json ,@body out)))
+
+(defmacro with-json ((var json) &body body)
+  `(let ((,var 
+           (with-input-from-string (in json)
+             (cl-json:decode-json in))))
+     ,body
+     ))
+
+(defroute register-lead-route ("/marketing/register-lead" :method :post) (&post name email phone)
+    (as-json
+      (people-marketing-api.marketing:register-new-lead :name name :email email :phone phone)))

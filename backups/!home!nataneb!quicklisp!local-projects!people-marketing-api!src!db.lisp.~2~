@@ -1,0 +1,8 @@
+(in-package #:people-marketing-api.db)
+
+(deftable lead ()
+  ((name :col-type (:varchar 64))
+   (email :col-type (:varchar 64))
+   (phone :col-type (:varchar 64))))
+
+(ensure-table-exists 'lead)

@@ -1,0 +1,4 @@
+;;;; package.lisp
+
+(defpackage #:people-marketing-api
+  (:use #:cl))

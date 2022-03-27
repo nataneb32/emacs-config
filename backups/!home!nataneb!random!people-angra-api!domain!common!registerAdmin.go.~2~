@@ -1,0 +1,19 @@
+package common
+
+import (
+	"context"
+
+	//"github.com/go-rel/rel"
+	//"github.com/joomcode/errorx"
+	//	"github.com/nataneb32/people-angra-api/config"
+	"github.com/nataneb32/people-angra-api/domain/common/model"
+)
+
+type RegisterAdminFunc func(ctx context.Context, username string, password string) (*commonModel.Admin, error)
+type LoginAdminFunc func(username string, password string) (*commonModel.Admin, error)
+
+func NewRegisterAdminFunc() RegisterAdminFunc {
+	return func(ctx context.Context, username, password string) (*commonModel.Admin, error) {
+		return 
+	}
+}

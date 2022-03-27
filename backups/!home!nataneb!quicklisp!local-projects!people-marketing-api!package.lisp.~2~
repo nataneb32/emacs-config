@@ -1,0 +1,16 @@
+;;;; package.lisp
+
+(defpackage #:people-marketing-api
+  (:use #:cl)
+  (:export #:start #:stop #:start-and-block))
+
+(defpackage #:people-marketing-api.view
+  (:use #:cl #:easy-routes))
+
+(defpackage #:people-marketing-api.db
+  (:use #:cl #:mito)
+  (:export #:lead))
+
+(defpackage #:people-marketing-api.marketing
+  (:use #:cl #:people-marketing-api.db)
+  (:export #:register-new-lead #:search-lead))

@@ -1,0 +1,8 @@
+;;;; people-marketing.lisp
+
+(in-package #:people-marketing)
+
+(defvar *server* (make-instance 'easy-routes:routes-acceptor :port 3000))
+
+(defun start-server ()
+  (hunchentoot:start *server*))

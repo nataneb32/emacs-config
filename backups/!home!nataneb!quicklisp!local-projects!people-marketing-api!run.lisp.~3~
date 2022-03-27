@@ -1,0 +1,9 @@
+(ql:quickload "people-marketing-api")
+
+(mito:connect-toplevel :postgres
+                       :database-name (uiop:getenv "POSTGRES_DATABASE")
+                       :username (uiop:getenv "POSTGRES_USER")
+                       :password (uiop:getenv "POSTGRES_PASSWORD")
+                       :host (uiop:getenv "POSTGRES_HOST"))
+
+(people-marketing-api:start-and-block)

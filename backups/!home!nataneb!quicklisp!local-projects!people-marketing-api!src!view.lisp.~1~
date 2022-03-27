@@ -1,0 +1,11 @@
+(in-package #:people-marketing-api.view)
+
+(defmacro defrest (name template params &body body)
+  `(defroute ,name ,template ,params
+       (with-output-to-string (out)
+         (cl-json:encode-json ,@body out))))
+
+;;; marketing
+
+(defrest test ("/") ()
+  (people-marketing-api.marketing:register-new-lead :name "ars" :email "arst" :phone "art"))

@@ -1,0 +1,10 @@
+package config
+
+import (
+	"os"
+
+	"github.com/go-rel/rel"
+	"github.com/go-rel/postgres"
+)
+
+var DB = rel.New(postgres.MustOpen(os.Getenv("DATABASE_URL")))

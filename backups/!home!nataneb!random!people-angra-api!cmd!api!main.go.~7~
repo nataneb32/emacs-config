@@ -1,0 +1,131 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/labstack/echo/v4"
+	ut "github.com/go-playground/universal-translator"
+	en_translations "github.com/go-playground/validator/v10/translations/en"
+	"github.com/nataneb32/people-angra-api/domain/marketing"
+	"github.com/nataneb32/people-angra-api/domain/common"
+	"github.com/go-playground/validator/v10"
+	"github.com/go-playground/locales/en"
+)
+
+func NewValidatorHandle(trans ut.Translator) echo.MiddlewareFunc {
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			err := next(c)
+
+			if verrs, ok := err.(validator.ValidationErrors); ok {
+				res := make([]map[string]interface{}, 0)
+				
+				for _, ferr := range verrs {
+					res = append(res, map[string]interface{}{
+						"field": ferr.Namespace(),
+						"error": ferr.Translate(trans),
+					})
+				}
+
+				c.JSON(500, res)
+				return nil
+			}
+			
+			if err != nil {
+				return err
+			}
+
+			return nil
+		}
+	}
+}
+
+func main(){
+	r := echo.New()
+	validate := validator.New()
+	en := en.New()
+	uni := ut.New(en, en)
+
+	// this is usually know or extracted from http 'Accept-Language' header
+	// also see uni.FindTranslator(...)
+	trans, _ := uni.GetTranslator("en")
+	en_translations.RegisterDefaultTranslations(validate, trans)
+
+	r.Use(NewValidatorHandle(trans))
+
+	type RegisterLeadParam struct {
+		Name string `validate:"required"`
+		Email string `validate:"required"`
+		Phone string `validate:"required"`
+	}
+
+	r.POST("/marketing/register-lead", func(c echo.Context) error {
+		var param RegisterLeadParam
+		err := c.Bind(&param)
+		if err != nil {
+			return err
+		}
+
+		err = validate.Struct(param)
+		if err != nil {
+			return err
+		}
+
+		err = marketing.RegisterLead(param.Name, param.Email, param.Phone)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+
+	r.GET("/marketing/search-leads", func(c echo.Context) error {
+		var param SearchParam
+		err := c.Bind(&param)
+		if err != nil {
+			return err
+		}
+
+		fmt.Println(param.ParseFilters())
+
+		if param.Page == 0 {
+			param.Page = 1
+		}
+		
+		if param.Limit == 0 {
+			param.Limit = 10
+		}
+		
+		res, _, _, err := marketing.SearchLead(param.ParseFilters(), param.Page, param.Limit)
+		if err != nil {
+			return err
+		}
+
+		c.JSON(200, res)
+		
+		return nil
+	})
+
+
+	r.Start("0.0.0.0:8080")
+}
+
+
+type SearchParam struct {
+	Filters string `validate:"required" query:"filters"`
+	Page int `query:"page"`
+	Limit int `validate:"required" query:"limit"`
+}
+
+func (it *SearchParam) ParseFilters() ([]common.Filter) {
+	if it.Filters == "" {
+		return nil
+	}
+	var param []common.Filter
+	err := json.Unmarshal([]byte(it.Filters), &param)
+	if err != nil {
+		panic(err)
+	}
+
+	return param
+}

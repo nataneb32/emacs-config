@@ -1,0 +1,27 @@
+package marketingPublic
+
+import (
+	"context"
+	"github.com/go-rel/rel"
+	"github.com/nataneb32/people-angra-api/domain/marketing/model"
+)
+
+type RegisterLeadFunc func(name string, email string, phone string) error
+
+func NewRegisterLeadFunc(repo rel.Repository) RegisterLeadFunc {
+  return func(name, email, phone string) error {
+    ctx := context.Background()
+
+    err := repo.Insert(ctx, marketingModel.Lead{
+      Name: name,
+      Email: email,
+      Phone: phone,
+    })
+
+    if err != nil {
+      return err
+    }
+
+    return nil
+  }
+}

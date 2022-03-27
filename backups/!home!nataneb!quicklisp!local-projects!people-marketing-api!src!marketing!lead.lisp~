@@ -1,0 +1,5 @@
+(in-package #:people-marketing-api.marketing)
+
+(defun register-new-lead (&key name email phone)
+  (let ((new-lead (make-instance 'lead :name name :email email :phone phone)))
+    (mito:insert-dao new-lead)))

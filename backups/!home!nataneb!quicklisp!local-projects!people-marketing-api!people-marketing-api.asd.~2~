@@ -1,0 +1,18 @@
+;;;; people-marketing-api.asd
+
+(asdf:defsystem #:people-marketing-api
+  :description "Describe people-marketing-api here"
+  :author "Your Name <your.name@example.com>"
+  :license  "Specify license here"
+  :version "0.0.1"
+  :serial t
+  :build-operation "program-op" ;; leave as is
+  :build-pathname "people-marketing-api"
+  :entry-point "people-markenting-api:main"
+  :depends-on (#:mito #:hunchentoot #:easy-routes #:cl-json)
+  :components ((:file "package")
+               (:file "people-marketing-api")
+               (:file "src/db")
+               (:file "src/view")
+               (:file "src/filter")
+               (:file "src/marketing/lead")))

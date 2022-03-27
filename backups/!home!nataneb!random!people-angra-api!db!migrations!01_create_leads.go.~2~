@@ -1,0 +1,23 @@
+package migrations
+
+import (
+    "github.com/go-rel/rel"
+)
+
+func MigrateCreateLeads(schema *rel.Schema) {
+    schema.CreateTable("leads", func(t *rel.Table) {
+        t.ID("id")
+        t.DateTime("created_at")
+	    t.DateTime("updated_at")
+	    t.String("name")
+	    t.String("phone")
+	    t.String("email")
+	    t.BigInt("is_customer", rel.Required(false))
+    })
+
+    schema.CreateIndex("leads", "email", []string{"email"})
+}
+
+func RollbackCreateLeads(schema *rel.Schema) {
+    schema.DropTable("leads")
+}

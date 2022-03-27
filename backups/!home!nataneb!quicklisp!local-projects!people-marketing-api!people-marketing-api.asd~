@@ -1,0 +1,10 @@
+;;;; people-marketing-api.asd
+
+(asdf:defsystem #:people-marketing-api
+  :description "Describe people-marketing-api here"
+  :author "Your Name <your.name@example.com>"
+  :license  "Specify license here"
+  :version "0.0.1"
+  :serial t
+  :components ((:file "package")
+               (:file "people-marketing-api")))

@@ -1,0 +1,6 @@
+FROM fukamachi/sbcl
+
+COPY . /usr/src/app
+WORKDIR /usr/src/app
+
+CMD [ "sbcl", "--load", "quicklisp.lisp", "--load", "people-marketing-api.asd", "--load", "./run.lisp" ]
